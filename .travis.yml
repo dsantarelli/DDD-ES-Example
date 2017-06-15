@@ -1,4 +1,5 @@
 language: java
-mvn test -B
+sudo: false
+script: mvn clean verify test -B
 jdk:
   - oraclejdk8
