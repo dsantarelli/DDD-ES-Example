@@ -1,5 +1,5 @@
 # DDD-ES-Example
-Domain Driven Design and EventSourcing example
+Just another Domain Driven Design and EventSourcing example written in Java.
 ## Some highlights
 * The [AggregateRoot](https://github.com/dsantarelli/DDD-ES-Example/blob/master/ddd-es/ddd-es-core/src/main/java/dddes/core/AggregateRoot.java) abstract class provides a mechanism to guarantee the consistency of changes being made internally by forbidding external objects from holding references to its members.
 * The [AggregateRootEvent](https://github.com/dsantarelli/DDD-ES-Example/blob/master/ddd-es/ddd-es-core/src/main/java/dddes/core/AggregateRootEvent.java) and the
