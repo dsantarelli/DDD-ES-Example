@@ -68,14 +68,14 @@ public class ProductTest {
 		// @formatter:off
 		new AggregateRootAssert<Product>(ProductFactory.create(oldName))
 		  .markPendingChangesAsCommitted()
-	      .call(x -> x.rename(newName))
-	      .thereIsExactlyOnePendingChangeOfType(ProductRenamed.class)
-	      .versionIs(2)
-	      .isTrueThat(x -> x.getName() == newName)
-	      .markPendingChangesAsCommitted()
-	      .thereAreNoPendingChanges()
-	      .call(x -> x.rename(newName))
-	      .thereAreNoPendingChanges();
+		  .call(x -> x.rename(newName))
+		  .thereIsExactlyOnePendingChangeOfType(ProductRenamed.class)
+		  .versionIs(2)
+		  .isTrueThat(x -> x.getName() == newName)
+		  .markPendingChangesAsCommitted()
+		  .thereAreNoPendingChanges()
+		  .call(x -> x.rename(newName))
+		  .thereAreNoPendingChanges();
 		// @formatter:on
 	}
 
