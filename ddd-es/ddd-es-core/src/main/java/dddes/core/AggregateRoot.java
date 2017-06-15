@@ -62,11 +62,11 @@ public abstract class AggregateRoot<ID> implements IAggregateRoot<ID> {
 
 	private void applyEvent(Event event) {
 		try {
-			Method method = this.getClass().getDeclaredMethod("on", event.getClass());
-			if (method != null) {
-				method.setAccessible(true);
-				method.invoke(this, event);
-			} else throw new ReflectionException(new NullPointerException("method 'on' not found for event: " + event.getClass().getName()));
+		  Method method = this.getClass().getDeclaredMethod("on", event.getClass());
+		  if (method != null) {
+			method.setAccessible(true);
+			method.invoke(this, event);
+		  } else throw new ReflectionException(new NullPointerException("method 'on' not found for event: " + event.getClass().getName()));
 		} catch (Exception e) { e.printStackTrace(); }
 	}
 
