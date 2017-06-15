@@ -52,9 +52,9 @@ public class ProductTest {
 		// @formatter:off
 		new AggregateRootAssert<Product>(ProductFactory.create(id, name))
 			.idIs(id)
-			.versionIs(1)			
+			.versionIs(1)
 			.thereIsExactlyOnePendingChangeOfType(ProductCreated.class)
-		    .isTrueThat(product -> product.getName() == name);
+			.isTrueThat(product -> product.getName() == name);
 		// @formatter:on
 	}
 
@@ -71,11 +71,11 @@ public class ProductTest {
 	      .call(x -> x.rename(newName))
 	      .thereIsExactlyOnePendingChangeOfType(ProductRenamed.class)
 	      .versionIs(2)
-		  .isTrueThat(x -> x.getName() == newName)
-		  .markPendingChangesAsCommitted()
-		  .thereAreNoPendingChanges()
-		  .call(x -> x.rename(newName))
-		  .thereAreNoPendingChanges();
+	      .isTrueThat(x -> x.getName() == newName)
+	      .markPendingChangesAsCommitted()
+	      .thereAreNoPendingChanges()
+	      .call(x -> x.rename(newName))
+	      .thereAreNoPendingChanges();
 		// @formatter:on
 	}
 
@@ -117,7 +117,7 @@ public class ProductTest {
 
 		// @formatter:off
 		new AggregateRootAssert<Product>(product)
-		    .markPendingChangesAsCommitted()
+			.markPendingChangesAsCommitted()
 			.call(x -> x.planBacklogItem(backlogItem1)).call(x -> x.planBacklogItem(backlogItem2))
 			.call(x -> x.planBacklogItem(backlogItem3)).markPendingChangesAsCommitted()
 	
