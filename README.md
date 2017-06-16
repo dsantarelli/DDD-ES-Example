@@ -1,5 +1,5 @@
 ![Travis](https://travis-ci.org/dsantarelli/DDD-ES-Example.svg?branch=master)
-# DDD-ES-Example
+# Domain Driven Design/Event Sourcing Example
 Just another [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven_design) and [EventSourcing](https://martinfowler.com/eaaDev/EventSourcing.html) example written in Java.
 ## Some highlights
 * The [AggregateRoot](https://github.com/dsantarelli/DDD-ES-Example/blob/master/ddd-es/ddd-es-core/src/main/java/dddes/core/AggregateRoot.java) abstract class provides a mechanism to guarantee the consistency of changes being made internally by forbidding external objects from holding references to its members.
