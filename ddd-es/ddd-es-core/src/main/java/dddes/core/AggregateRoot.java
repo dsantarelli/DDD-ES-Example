@@ -19,9 +19,9 @@ public abstract class AggregateRoot<ID> implements IAggregateRoot<ID> {
 	protected AggregateRoot() {
 		this.entities = new HashSet<IEntity<ID>>();
 		this.pendingChanges = new ArrayList<>();
-		this.version = 0;
+		this.version = 0; 
 	}
-
+	
 	public ID getId() {
 		return id;
 	}
