@@ -1,4 +1,4 @@
-![Travis](https://travis-ci.org/dsantarelli/DDD-ES-Example.svg?branch=master)
+[![Build Status](https://travis-ci.org/dsantarelli/DDD-ES-Example.png)](https://travis-ci.org/dsantarelli/DDD-ES-Example)
 # Domain Driven Design/Event Sourcing Example
 Just another [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven_design) and [EventSourcing](https://martinfowler.com/eaaDev/EventSourcing.html) example written in Java.
 ## Some highlights
