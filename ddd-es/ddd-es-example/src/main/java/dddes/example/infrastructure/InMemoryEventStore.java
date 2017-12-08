@@ -1,6 +1,7 @@
 package dddes.example.infrastructure;
 
 import java.util.Objects;
+import java.util.stream.Stream;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.ArrayList;
@@ -10,42 +11,40 @@ import dddes.core.IEventStore;
 
 public class InMemoryEventStore<ID> implements IEventStore<ID> {
 
-	private final HashMap<ID, ArrayList<Event>> _store;
+	private final HashMap<ID, ArrayList<Event>> store;
 
 	public InMemoryEventStore() {
-		_store = new HashMap<ID, ArrayList<Event>>();
+		this.store = new HashMap<ID, ArrayList<Event>>();
 	}
 
-	public void saveEvents(ID aggregateId, Iterable<Event> events) {
-		saveEvents(aggregateId, events, -1);
+	public void appendEventsToStream(ID streamId, Stream<Event> events) {
+		appendEventsToStream(streamId, events, -1);
 	}
 
-	public void saveEvents(ID aggregateId, Iterable<Event> events, int expectedVersion) throws ConcurrentModificationException {
-
-		Objects.requireNonNull(aggregateId, "aggregateId must not be null");
+	public void appendEventsToStream(ID streamId, Stream<Event> events, long expectedLastPosition) throws ConcurrentModificationException {
+	  
+		Objects.requireNonNull(streamId, "streamId must not be null");
 		Objects.requireNonNull(events, "events must not be null");
 
-		if (!_store.containsKey(aggregateId))
-			_store.put(aggregateId, new ArrayList<Event>());
+		if (!store.containsKey(streamId))
+			store.put(streamId, new ArrayList<Event>());
 
-		ArrayList<Event> storedEvents = _store.get(aggregateId);
-		int currentVersion = storedEvents.size();
-
-		if (expectedVersion >= 0 && currentVersion != expectedVersion)
-			throw new ConcurrentModificationException(
-					String.format("Expected: %s - Actual: %s", expectedVersion, currentVersion));
-
-		for (Event event : events)
-			storedEvents.add(event);
+		ArrayList<Event> stream = store.get(streamId);		
+		int currentLastPosition = stream.size();
+		
+		if (expectedLastPosition >= 0 && currentLastPosition != expectedLastPosition)
+			throw new ConcurrentModificationException(String.format("Expected: %s - Actual: %s", expectedLastPosition, currentLastPosition));
+		
+		events.forEach(event -> stream.add(event));				
 	}
 
-	public Iterable<Event> getEventsForAggregate(ID aggregateId) throws NoSuchElementException {
+	public Stream<Event> getStream(ID streamId) throws NoSuchElementException {
+	  
+		Objects.requireNonNull(streamId);
 
-		Objects.requireNonNull(aggregateId);
+		if (!store.containsKey(streamId))
+			throw new NoSuchElementException("Aggregate not found: " + streamId);
 
-		if (!_store.containsKey(aggregateId))
-			throw new NoSuchElementException("Aggregate not found: " + aggregateId);
-
-		return new ArrayList<Event>(_store.get(aggregateId));
+		return store.get(streamId).stream();
 	}
 }

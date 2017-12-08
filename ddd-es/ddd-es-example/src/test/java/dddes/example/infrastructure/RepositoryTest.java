@@ -21,7 +21,8 @@ public class RepositoryTest {
 	private static BacklogItemRepository backlogItemRepository;
 
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	public static void setUp() throws Exception {
+	  
 		eventStore = new PublishingEventStore<String>(new InMemoryEventStore<String>(), new ConsoleEventPublisher());
 		productRepository = new ProductRepository(eventStore);
 		backlogItemRepository = new BacklogItemRepository(eventStore);
@@ -29,7 +30,8 @@ public class RepositoryTest {
 
 	@Test
 	@Category(InfrastructureTests.class)
-	public void repositoriesCantLoadNotExistingAggregates() {
+	public void repositories_cant_load_not_existing_aggregates() {
+	  
 		assertThatThrownBy(() -> productRepository.getById(null));
 		assertThatThrownBy(() -> productRepository.getById(UUID.randomUUID().toString()));
 		assertThatThrownBy(() -> backlogItemRepository.getById(null));
@@ -38,7 +40,8 @@ public class RepositoryTest {
 
 	@Test
 	@Category(InfrastructureTests.class)
-	public void repositoriesShouldSaveAggregates() {
+	public void repositories_should_save_aggregates() {
+	  
 		Product product = ProductFactory.create("Product");
 		assertThat(product.getPendingChanges()).size().isGreaterThan(0);
 		productRepository.save(product);
@@ -47,7 +50,8 @@ public class RepositoryTest {
 
 	@Test
 	@Category(InfrastructureTests.class)
-	public void repositoriesShouldSaveAggregatesWithExpectedVersion() {
+	public void repositories_should_save_aggregates_with_expected_version() {
+	  
 		Product product1 = ProductFactory.create("Product");
 		product1.rename("Product 1");
 		productRepository.save(product1);
@@ -59,7 +63,8 @@ public class RepositoryTest {
 
 	@Test
 	@Category(InfrastructureTests.class)
-	public void repositoriesShouldNotSaveAggregatesWithUnexpectedVersion() {
+	public void repositories_should_not_save_aggregates_with_unexpected_version() {
+	  
 		Product product1 = ProductFactory.create("Product");		
 		product1.rename("Product 1");
 		productRepository.save(product1);
@@ -72,7 +77,8 @@ public class RepositoryTest {
 
 	@Test
 	@Category(InfrastructureTests.class)
-	public void repositoriesShouldLoadExistingAggregates() {
+	public void repositories_should_load_existing_aggregates() {
+	  
 		Product product1 = ProductFactory.create("Product");
 		productRepository.save(product1);
 		Product product2 = productRepository.getById(product1.getId());
@@ -81,7 +87,8 @@ public class RepositoryTest {
 	
 	@Test
 	@Category(InfrastructureTests.class)
-	public void differentRepositoriesShouldSaveAndLoadDifferentAggregates() {
+	public void different_repositories_should_save_and_load_different_aggregates() {
+	  
 		Product product1 = ProductFactory.create("Product");
 		BacklogItem backlogItem1 = BacklogItemFactory.create("BacklogItem 1", product1);
 		BacklogItem backlogItem2 = BacklogItemFactory.create("BacklogItem 2", product1);
@@ -100,7 +107,7 @@ public class RepositoryTest {
 		Product product2 = productRepository.getById(product1.getId());
 		assertThat(product2).isEqualTo(product1);
 		assertThat(product2.getName()).isEqualTo(product1.getName());
-		assertThat(product2.getPlannedBacklogItems().length).isEqualTo(product1.getPlannedBacklogItems().length);
+		assertThat(product2.getPlannedBacklogItems().count()).isEqualTo(product1.getPlannedBacklogItems().count());
 		
 		BacklogItem backlogItem3 = backlogItemRepository.getById(backlogItem1.getId());
 		assertThat(backlogItem3).isEqualTo(backlogItem1);

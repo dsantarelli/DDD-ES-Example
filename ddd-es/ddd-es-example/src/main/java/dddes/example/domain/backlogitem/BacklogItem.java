@@ -6,17 +6,18 @@ import dddes.example.domain.backlogitem.events.*;
 import dddes.example.domain.product.Product;
 import dddes.example.infrastructure.Strings;
 
-public class BacklogItem extends AggregateRoot<String> {
+public final class BacklogItem extends AggregateRoot<String> {
 
 	private String title;
 	private StoryPoints storyPoints;
 	private String productId;
 
-	BacklogItem() {}
+	BacklogItem() {}	
+	
 	public BacklogItem(String id, String title, Product product) {
 		this(id, title, StoryPoints.ZERO, product);
 	}
-
+	
 	public BacklogItem(String id, String title, StoryPoints storyPoints, Product product) {
 		Strings.requireNonNullOrWhitespace(id, "id");
 		Strings.requireNonNullOrWhitespace(title, "title");
@@ -38,7 +39,7 @@ public class BacklogItem extends AggregateRoot<String> {
 
 	public void changeTitle(String title) {
 		Strings.requireNonNullOrWhitespace(title, "title");
-		if (this.title != title.trim())
+		if (!this.title.equals(title))
 			applyChange(new BacklogItemTitleChanged(title));
 	}
 
@@ -46,22 +47,20 @@ public class BacklogItem extends AggregateRoot<String> {
 		if (this.storyPoints.getValue() != storyPoints.getValue())
 			applyChange(new StoryPointsAssignedToBacklogItem(storyPoints));
 	}
-
-	@SuppressWarnings("unused")
-	private void on(BacklogItemCreated e) {
+	
+  // Protected methods called via reflection by infrastructure	
+  protected void on(BacklogItemCreated e) {
 		setId(e.getAggregateRootId());
-		this.title = e.getTitle();
-		this.storyPoints = e.getStoryPoints();
-		this.productId = e.getProductId();
+		title = e.getTitle();
+		storyPoints = e.getStoryPoints();
+		productId = e.getProductId();
 	}
-
-	@SuppressWarnings("unused")
-	private void on(BacklogItemTitleChanged e) {
-		this.title = e.getTitle();
+	
+	protected void on(BacklogItemTitleChanged e) {
+		title = e.getTitle();
 	}
-
-	@SuppressWarnings("unused")
-	private void on(StoryPointsAssignedToBacklogItem e) {
-		this.storyPoints = e.getStoryPoints();
+	
+	protected void on(StoryPointsAssignedToBacklogItem e) {
+		storyPoints = e.getStoryPoints();
 	}
 }

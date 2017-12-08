@@ -1,6 +1,7 @@
 package dddes.example.infrastructure;
 
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import dddes.core.Event;
 import dddes.core.IEventPublisher;
@@ -18,17 +19,18 @@ public class PublishingEventStore<ID> implements IEventStore<ID> {
 		this.eventPublisher = eventPublisher;
 	}
 
-	public void saveEvents(ID aggregateId, Iterable<Event> events) {
-		saveEvents(aggregateId, events, -1);
+	public void appendEventsToStream(ID streamId, Stream<Event> events) {
+		appendEventsToStream(streamId, events, -1);
 	}
 
-	public void saveEvents(ID aggregateId, Iterable<Event> events, int expectedVersion) {
-		eventStore.saveEvents(aggregateId, events, expectedVersion);
-		for (Event event : events)
-			eventPublisher.publish(event);
+	public void appendEventsToStream(ID streamId, Stream<Event> events, long expectedLastPosition) {	  	  
+	  events.forEach(event -> {	   
+	    eventStore.appendEventsToStream(streamId, Stream.of(event), expectedLastPosition);  
+	    eventPublisher.publish(event);	    
+	  });		
 	}
 
-	public Iterable<Event> getEventsForAggregate(ID aggregateId) {
-		return eventStore.getEventsForAggregate(aggregateId);
+	public Stream<Event> getStream(ID streamId) {
+		return eventStore.getStream(streamId);
 	}
 }

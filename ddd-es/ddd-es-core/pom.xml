@@ -8,8 +8,5 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>ddd-es-core</artifactId>
-	<name>ddd-es-core</name>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+	<name>ddd-es-core</name>	
 </project>

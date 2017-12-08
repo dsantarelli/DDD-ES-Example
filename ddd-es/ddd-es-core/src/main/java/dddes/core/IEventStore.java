@@ -1,10 +1,11 @@
 package dddes.core;
 
+import java.util.stream.Stream;
+
 public interface IEventStore<ID> {
 
-	void saveEvents(ID aggregateId, Iterable<Event> events);
+	void appendEventsToStream(ID streamId, Stream<Event> events);
+	void appendEventsToStream(ID streamId, Stream<Event> events, long expectedLastPosition);
 
-	void saveEvents(ID aggregateId, Iterable<Event> events, int expectedVersion);
-
-	Iterable<Event> getEventsForAggregate(ID aggregateId);
+	Stream<Event> getStream(ID streamId);
 }

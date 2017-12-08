@@ -15,7 +15,8 @@ public class BacklogItemTest {
 
 	@Test
 	@Category(BacklogItemTests.class)
-	public void backlogItemShouldNotBeCreatedWithNullOrEmptyName() {
+	public void backlogItem_should_not_be_created_with_null_or_empty_name() {
+	  
 		Product product = ProductFactory.create("My product");
 		assertThatIllegalArgumentException().isThrownBy(() -> BacklogItemFactory.create(null, null, product));
 		assertThatIllegalArgumentException().isThrownBy(() -> BacklogItemFactory.create("", null, product));
@@ -25,7 +26,8 @@ public class BacklogItemTest {
 
 	@Test
 	@Category(BacklogItemTests.class)
-	public void backlogItemShouldNotBeCreatedWithNullOrEmptyId() {
+	public void backlogItem_should_not_be_created_with_null_or_empty_id() {
+	  
 		Product product = ProductFactory.create("My product");
 		assertThatIllegalArgumentException().isThrownBy(() -> BacklogItemFactory.create(null, "Name", product));
 		assertThatIllegalArgumentException().isThrownBy(() -> BacklogItemFactory.create("", "Name", product));
@@ -35,13 +37,15 @@ public class BacklogItemTest {
 
 	@Test
 	@Category(BacklogItemTests.class)
-	public void backlogItemShouldNotBeCreatedWithoutAProduct() {
+	public void backlogItem_should_not_be_created_without_a_product() {
+	  
 		assertThatNullPointerException().isThrownBy(() -> BacklogItemFactory.create("ID", "Name", null));
 	}
 
 	@Test
 	@Category(BacklogItemTests.class)
-	public void backlogItemShouldNotBeRenamedWithNullOrEmptyName() {
+	public void backlogItem_should_not_be_renamed_with_null_or_empty_name() {
+	  
 		Product product = ProductFactory.create("Product name");
 		BacklogItem backlogItem = BacklogItemFactory.create("BacklogItem", product);
 		assertThatIllegalArgumentException().isThrownBy(() -> backlogItem.changeTitle(null));
@@ -52,7 +56,7 @@ public class BacklogItemTest {
 
 	@Test
 	@Category(BacklogItemTests.class)
-	public void backlogItemShouldHaveAtLeastAnIdAndAName() {
+	public void backlogItem_should_have_at_least_an_id_and_a_name() {
 
 		Product product = ProductFactory.create("My product");
 		String id = UUID.randomUUID().toString();
@@ -70,7 +74,7 @@ public class BacklogItemTest {
 
 	@Test
 	@Category(BacklogItemTests.class)
-	public void backlogItemShouldBeRenamed() {
+	public void backlogItem_should_be_renamed() {
 
 		Product product = ProductFactory.create("My product");
 		String oldName = "Old product name";
@@ -91,7 +95,7 @@ public class BacklogItemTest {
 
 	@Test
 	@Category(BacklogItemTests.class)
-	public void backlogItemShouldHaveStoryPoints() {
+	public void backlogItem_should_have_storyPoints() {
 
 		Product product = ProductFactory.create("My product");
 		StoryPoints storyPoints = StoryPoints.FIVE;

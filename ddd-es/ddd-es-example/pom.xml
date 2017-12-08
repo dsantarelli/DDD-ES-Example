@@ -7,10 +7,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>ddd-es-example</artifactId>
-	<name>ddd-es-example</name>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+	<name>ddd-es-example</name>	
 	<dependencies>
 		<dependency>
 			<groupId>org.dsantarelli</groupId>

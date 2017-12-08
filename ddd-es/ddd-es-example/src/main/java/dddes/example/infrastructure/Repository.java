@@ -3,10 +3,10 @@ package dddes.example.infrastructure;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Supplier;
-import dddes.core.Event;
+
 import dddes.core.IAggregateRoot;
-import dddes.core.IRepository;
 import dddes.core.IEventStore;
+import dddes.core.IRepository;
 
 public class Repository<T extends IAggregateRoot<ID>, ID> implements IRepository<T, ID> {
 
@@ -25,19 +25,17 @@ public class Repository<T extends IAggregateRoot<ID>, ID> implements IRepository
 	}
 
 	public void save(T aggregateRoot, int expectedVersion) {
+	  
 		Objects.requireNonNull(aggregateRoot, "aggregateRoot must be not null");		
-		eventStore.saveEvents(aggregateRoot.getId(), aggregateRoot.getPendingChanges(), expectedVersion);
+		eventStore.appendEventsToStream(aggregateRoot.getId(), aggregateRoot.getPendingChanges(), expectedVersion);
 		aggregateRoot.markPendingChangesAsCommitted();
 	}
 
 	public T getById(ID aggregateRootId) throws NoSuchElementException {
-		Objects.requireNonNull(aggregateRootId, "aggregateRootId must be not null");
-		Iterable<Event> events = eventStore.getEventsForAggregate(aggregateRootId);
-		if (!events.iterator().hasNext())
-			throw new NoSuchElementException("aggregateRoot not found: " + aggregateRootId.toString());
-		
+	  
+		Objects.requireNonNull(aggregateRootId, "aggregateRootId must be not null");		
 		T aggregateRoot = defaultAggregateRootFactory.get();		
-		aggregateRoot.loadFromHistory(events);
+		aggregateRoot.loadFromHistory(eventStore.getStream(aggregateRootId));
 		return aggregateRoot;
 	}
 }

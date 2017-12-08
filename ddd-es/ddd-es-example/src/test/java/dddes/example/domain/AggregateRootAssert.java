@@ -6,7 +6,10 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import java.lang.reflect.Type;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
+
 import org.assertj.core.api.AbstractAssert;
+
 import dddes.core.AggregateRoot;
 import dddes.core.Event;
 
@@ -86,7 +89,7 @@ public class AggregateRootAssert<T extends AggregateRoot<?>>
 		return this;
 	}
 
-	public AggregateRootAssert<T> withPendingChanges(Consumer<Iterable<Event>> consumer) {
+	public AggregateRootAssert<T> withPendingChanges(Consumer<Stream<Event>> consumer) {
 		consumer.accept(actual.getPendingChanges());
 		return this;
 	}
